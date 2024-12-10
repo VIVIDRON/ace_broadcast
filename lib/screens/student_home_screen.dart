@@ -16,6 +16,8 @@ class StudentHomeScreen extends StatefulWidget {
 class _StudentHomeScreenState extends State<StudentHomeScreen> {
   final ScrollController _scrollController = ScrollController();
   double _titleSize = 28;
+  // ignore: unused_field
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -36,6 +38,12 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
 
     setState(() {
       _titleSize = (maxSize - (offset / 50)).clamp(minSize, maxSize);
+    });
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
     });
   }
 
@@ -156,28 +164,54 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        backgroundColor: Colors.white,
+        elevation: 0,
         items: [
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/home.svg',
-              colorFilter: const ColorFilter.mode(
-                Colors.black,
-                BlendMode.srcIn,
+            icon: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: _selectedIndex == 0 
+                    ? const Color(0xFF6C63FF).withOpacity(0.1)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: SvgPicture.asset(
+                'assets/icons/home.svg',
+                colorFilter: ColorFilter.mode(
+                  _selectedIndex == 0 ? const Color(0xFF6C63FF) : Colors.black,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/bell.svg',
-              colorFilter: const ColorFilter.mode(
-                Colors.black,
-                BlendMode.srcIn,
+            icon: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: _selectedIndex == 1 
+                    ? const Color(0xFF6C63FF).withOpacity(0.1)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: SvgPicture.asset(
+                'assets/icons/bell.svg',
+                colorFilter: ColorFilter.mode(
+                  _selectedIndex == 1 ? const Color(0xFF6C63FF) : Colors.black,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             label: 'Notifications',
           ),
         ],
+        selectedItemColor: const Color(0xFF6C63FF),
+        unselectedItemColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
+        showUnselectedLabels: true,
       ),
     );
   }
