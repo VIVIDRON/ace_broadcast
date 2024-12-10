@@ -3,6 +3,8 @@ import 'student_home_screen.dart';
 import 'admin_home_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/painting.dart';
+// TODO: Remove this import when Firebase is setup
+// import 'package:atharva_coe/services/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -92,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                       // }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF6C63FF),
+                      backgroundColor: const Color(0xFF6C63FF),
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
@@ -107,13 +109,42 @@ class LoginScreen extends StatelessWidget {
                   height: 50,
                   child: OutlinedButton.icon(
                     onPressed: () {
-                      // TODO: Implement Google Sign In
+                      // TODO: Implement Firebase Google Sign In
+                      // For now, just navigate to admin screen
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const AdminHomeScreen(),
                         ),
                       );
+
+                      // TODO: Uncomment this when Firebase is setup
+                      // final authService = AuthService();
+                      // final user = await authService.signInWithGoogle();
+                      // if (user != null && context.mounted) {
+                      //   if (user.email.endsWith('@admin.atharvacoe.ac.in')) {
+                      //     Navigator.pushReplacement(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => const AdminHomeScreen(),
+                      //       ),
+                      //     );
+                      //   } else if (user.email.endsWith('@atharvacoe.ac.in')) {
+                      //     Navigator.pushReplacement(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => const StudentHomeScreen(),
+                      //       ),
+                      //     );
+                      //   } else {
+                      //     ScaffoldMessenger.of(context).showSnackBar(
+                      //       const SnackBar(
+                      //         content: Text('Please use your college email address'),
+                      //       ),
+                      //     );
+                      //     await authService.signOut();
+                      //   }
+                      // }
                     },
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(

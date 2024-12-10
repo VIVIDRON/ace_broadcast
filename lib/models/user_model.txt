@@ -1,0 +1,17 @@
+class UserModel {
+  final String uid;
+  final String email;
+  final String name;
+  final String? photoURL;
+
+  UserModel({
+    required this.uid,
+    required this.email,
+    required this.name,
+    this.photoURL,
+  });
+
+  String get initials => name.isNotEmpty 
+    ? name.split(' ').map((e) => e[0].toUpperCase()).take(2).join() 
+    : '';
+} 

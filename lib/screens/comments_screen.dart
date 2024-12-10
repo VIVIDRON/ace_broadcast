@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
-import '../widgets/post_card.dart';
+import '../widgets/post_widget.dart';
+import '../models/post.dart';
 
 class CommentsScreen extends StatelessWidget {
-  const CommentsScreen({super.key});
+  final Post post;
+
+  const CommentsScreen({
+    super.key,
+    required this.post,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Firebase Comments Setup
-    // 1. Create comments subcollection in posts
-    // 2. Setup real-time comment listeners
-    // 3. Implement comment posting functionality
-    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Comments'),
       ),
       body: Column(
         children: [
-          const PostCard(
-            adminName: 'Admin',
-            timeAgo: '2h ago',
-            content: 'Original post content',
+          PostWidget(
+            adminName: post.adminName,
+            timeAgo: post.timeAgo,
+            content: post.content,
+            imageUrls: post.imageUrls,
+            likesCount: post.likesCount,
+            commentsCount: post.commentsCount,
+            isSaved: post.isSaved,
           ),
           Expanded(
             child: ListView(
