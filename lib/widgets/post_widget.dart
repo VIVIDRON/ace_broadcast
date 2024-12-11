@@ -133,26 +133,30 @@ class PostWidget extends StatelessWidget {
                     height: 24,
                     width: 24,
                     colorFilter: ColorFilter.mode(
-                      isLiked ? Colors.red : Colors.grey[700]!,
+                      isLiked ? Colors.red : Colors.black,
                       BlendMode.srcIn,
                     ),
                   ),
                   label: Text(
                     '$likesCount',
                     style: TextStyle(
-                      color: isLiked ? Colors.red : Colors.grey[700],
+                      color: isLiked ? Colors.red : Colors.black,
                     ),
                   ),
                   style: TextButton.styleFrom(
-                    foregroundColor: isLiked ? Colors.red : Colors.grey[700],
+                    foregroundColor: isLiked ? Colors.red : Colors.black,
                   ),
                 ),
                 TextButton.icon(
                   onPressed: onComment,
-                  icon: const Icon(Icons.comment_outlined),
+                  icon: SvgPicture.asset(
+                    'assets/icons/comment.svg',
+                    height: 24,
+                    width: 24,
+                  ),
                   label: Text('$commentsCount'),
                   style: TextButton.styleFrom(
-                    foregroundColor: Colors.grey[700],
+                    foregroundColor: Colors.black,
                   ),
                 ),
                 TextButton.icon(
@@ -160,7 +164,7 @@ class PostWidget extends StatelessWidget {
                   icon: const Icon(Icons.share_outlined),
                   label: const Text('Share'),
                   style: TextButton.styleFrom(
-                    foregroundColor: Colors.grey[700],
+                    foregroundColor: Colors.black,
                   ),
                 ),
               ],
