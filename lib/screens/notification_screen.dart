@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../widgets/notification_item.dart';
+import 'comments_screen.dart';
 
 class NotificationScreen extends StatelessWidget {
   final bool isAdmin;
@@ -25,16 +27,77 @@ class NotificationScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           child: const Text('Notifications',
-          style: TextStyle(color: Colors.black)),
+              style: TextStyle(color: Colors.black)),
         ),
       ),
-      body: const Center(
-        child: Text('Notifications will appear here'),
+      // TODO: Implement StreamBuilder for real-time notifications
+      // StreamBuilder<QuerySnapshot>(
+      //   stream: isAdmin 
+      //     ? FirebaseFirestore.instance
+      //         .collection('notifications')
+      //         .where('adminId', isEqualTo: currentUserId)
+      //         .orderBy('timestamp', descending: true)
+      //         .snapshots()
+      //     : FirebaseFirestore.instance
+      //         .collection('notifications')
+      //         .where('type', isEqualTo: 'new_post')
+      //         .orderBy('timestamp', descending: true)
+      //         .snapshots(),
+      body: ListView(
+        children: [
+          // Temporary static notifications for UI testing
+          if (isAdmin) ...[
+            NotificationItem(
+              profileUrl: 'student1.jpg',
+              name: 'John Doe',
+              timeAgo: '2m ago',
+              message: 'liked your post about campus event',
+              onTap: () {
+                // TODO: Navigate to specific post
+                // final postId = notification.postId;
+                // final post = await FirebaseFirestore.instance
+                //     .collection('posts')
+                //     .doc(postId)
+                //     .get();
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => CommentsScreen(post: post.data()),
+                //   ),
+                // );
+              },
+            ),
+            NotificationItem(
+              profileUrl: 'student2.jpg',
+              name: 'Jane Smith',
+              timeAgo: '5m ago',
+              message: 'commented on your post about library hours',
+              onTap: () {
+                // TODO: Navigate to specific comment
+                // final commentId = notification.commentId;
+                // final postId = notification.postId;
+                // Navigator.push(...)
+              },
+            ),
+          ] else ...[
+            NotificationItem(
+              profileUrl: 'admin1.jpg',
+              name: 'Admin',
+              timeAgo: '1h ago',
+              message: 'made a post about upcoming events',
+              onTap: () {
+                // TODO: Navigate to post
+                // final postId = notification.postId;
+                // Navigator.push(...)
+              },
+            ),
+          ],
+        ],
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          splashFactory: NoSplash.splashFactory, // Disables the ripple effect
-          highlightColor: Colors.transparent, // Removes highlight on long press
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: Colors.transparent,
         ),
         child: BottomNavigationBar(
           currentIndex: selectedIndex,
@@ -46,8 +109,8 @@ class NotificationScreen extends StatelessWidget {
               icon: Material(
                 type: MaterialType.transparency,
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: selectedIndex == 0
                         ? const Color(0xFF6C63FF).withOpacity(0.1)
@@ -71,8 +134,8 @@ class NotificationScreen extends StatelessWidget {
               icon: Material(
                 type: MaterialType.transparency,
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: selectedIndex == 1
                         ? const Color(0xFF6C63FF).withOpacity(0.1)
