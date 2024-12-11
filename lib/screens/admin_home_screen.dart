@@ -254,7 +254,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            TextField(
+            const TextField(
               maxLines: 4,
               decoration: const InputDecoration(
                 hintText: 'What would you like to announce?',

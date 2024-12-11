@@ -50,7 +50,7 @@ class CommentsScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: 'Type your reply here...',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(50),
                       ),
                     ),
                   ),

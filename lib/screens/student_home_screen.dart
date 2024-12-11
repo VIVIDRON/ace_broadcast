@@ -170,38 +170,50 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
         elevation: 0,
         items: [
           BottomNavigationBarItem(
-            icon: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: _selectedIndex == 0 
-                    ? const Color(0xFF6C63FF).withOpacity(0.1)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: SvgPicture.asset(
-                'assets/icons/home.svg',
-                colorFilter: ColorFilter.mode(
-                  _selectedIndex == 0 ? const Color(0xFF6C63FF) : Colors.black,
-                  BlendMode.srcIn,
+            icon: Material(
+              type: MaterialType.transparency,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: _selectedIndex == 0
+                      ? const Color(0xFF6C63FF).withOpacity(0.1)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: SvgPicture.asset(
+                  'assets/icons/home.svg',
+                  colorFilter: ColorFilter.mode(
+                    _selectedIndex == 0
+                        ? const Color(0xFF6C63FF)
+                        : Colors.black,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: _selectedIndex == 1 
-                    ? const Color(0xFF6C63FF).withOpacity(0.1)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: SvgPicture.asset(
-                'assets/icons/bell.svg',
-                colorFilter: ColorFilter.mode(
-                  _selectedIndex == 1 ? const Color(0xFF6C63FF) : Colors.black,
-                  BlendMode.srcIn,
+            icon: Material(
+              type: MaterialType.transparency,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: _selectedIndex == 1
+                      ? const Color(0xFF6C63FF).withOpacity(0.1)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: SvgPicture.asset(
+                  'assets/icons/bell.svg',
+                  colorFilter: ColorFilter.mode(
+                    _selectedIndex == 1
+                        ? const Color(0xFF6C63FF)
+                        : Colors.black,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),
