@@ -73,7 +73,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ScrollToHideWidget(
             controller: _scrollController,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: TextField(
                 textAlignVertical: TextAlignVertical.center,
                 style: const TextStyle(fontSize: 16),
@@ -106,7 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderSide: const BorderSide(color: Colors.black),
                   ),
                   isDense: false,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 ),
                 onChanged: (value) {
                   // TODO: Implement Firestore search query
@@ -170,61 +172,73 @@ class _HomeScreenState extends State<HomeScreen> {
               child: const Icon(Icons.add, color: Colors.white),
             )
           : null,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        items: [
-          BottomNavigationBarItem(
-            icon: Material(
-              type: MaterialType.transparency,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: _selectedIndex == 0
-                      ? const Color(0xFF6C63FF).withOpacity(0.1)
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: SvgPicture.asset(
-                  'assets/icons/home.svg',
-                  colorFilter: ColorFilter.mode(
-                    _selectedIndex == 0 ? const Color(0xFF6C63FF) : Colors.black,
-                    BlendMode.srcIn,
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          splashFactory: NoSplash.splashFactory, // Disables the ripple effect
+          highlightColor: Colors.transparent, // Removes highlight on long press
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          items: [
+            BottomNavigationBarItem(
+              icon: Material(
+                type: MaterialType.transparency,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: _selectedIndex == 0
+                        ? const Color(0xFF6C63FF).withOpacity(0.1)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/icons/home.svg',
+                    colorFilter: ColorFilter.mode(
+                      _selectedIndex == 0
+                          ? const Color(0xFF6C63FF)
+                          : Colors.black,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),
+              label: 'Home',
             ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Material(
-              type: MaterialType.transparency,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: _selectedIndex == 1
-                      ? const Color(0xFF6C63FF).withOpacity(0.1)
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: SvgPicture.asset(
-                  'assets/icons/bell.svg',
-                  colorFilter: ColorFilter.mode(
-                    _selectedIndex == 1 ? const Color(0xFF6C63FF) : Colors.black,
-                    BlendMode.srcIn,
+            BottomNavigationBarItem(
+              icon: Material(
+                type: MaterialType.transparency,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: _selectedIndex == 1
+                        ? const Color(0xFF6C63FF).withOpacity(0.1)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/icons/bell.svg',
+                    colorFilter: ColorFilter.mode(
+                      _selectedIndex == 1
+                          ? const Color(0xFF6C63FF)
+                          : Colors.black,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),
+              label: 'Notifications',
             ),
-            label: 'Notifications',
-          ),
-        ],
-        selectedItemColor: const Color(0xFF6C63FF),
-        unselectedItemColor: Colors.black,
-        type: BottomNavigationBarType.fixed,
-        showUnselectedLabels: true,
+          ],
+          selectedItemColor: const Color(0xFF6C63FF),
+          unselectedItemColor: Colors.black,
+          type: BottomNavigationBarType.fixed,
+          showUnselectedLabels: true,
+        ),
       ),
     );
   }
