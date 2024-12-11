@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'student_home_screen.dart';
-import 'admin_home_screen.dart';
+import 'home_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/painting.dart';
 // TODO: Remove this import when Firebase is setup
@@ -88,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const StudentHomeScreen(),
+                          builder: (context) => const HomeScreen(isAdmin: false),
                         ),
                       );
                       // }
@@ -114,7 +113,7 @@ class LoginScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AdminHomeScreen(),
+                          builder: (context) => const HomeScreen(isAdmin: true),
                         ),
                       );
 

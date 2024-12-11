@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import '../widgets/post_widget.dart';
 import '../data/posts_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../widgets/scroll_behavior.dart';
 import '../screens/comments_screen.dart';
+import '../widgets/scroll_behavior.dart';
 import '../widgets/profile_picture.dart';
 
-class StudentHomeScreen extends StatefulWidget {
-  const StudentHomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  final bool isAdmin;
+
+  const HomeScreen({super.key, required this.isAdmin});
 
   @override
-  State<StudentHomeScreen> createState() => _StudentHomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _StudentHomeScreenState extends State<StudentHomeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
   double _titleSize = 28;
-  // ignore: unused_field
   int _selectedIndex = 0;
 
   @override
@@ -72,11 +73,10 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
           ScrollToHideWidget(
             controller: _scrollController,
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: TextField(
                 textAlignVertical: TextAlignVertical.center,
-                style: const TextStyle(fontSize: 16), // Add this for text size
+                style: const TextStyle(fontSize: 16),
                 decoration: InputDecoration(
                   hintText: 'Search posts...',
                   hintStyle: const TextStyle(
@@ -105,10 +105,8 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                     borderRadius: BorderRadius.circular(50),
                     borderSide: const BorderSide(color: Colors.black),
                   ),
-                  isDense: false, // Change this to false
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 16), // Increase vertical padding
+                  isDense: false,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 ),
                 onChanged: (value) {
                   // TODO: Implement Firestore search query
@@ -163,6 +161,15 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
           ),
         ],
       ),
+      floatingActionButton: widget.isAdmin
+          ? FloatingActionButton(
+              onPressed: () {
+                _showCreatePostDialog(context);
+              },
+              backgroundColor: const Color(0xFF6C63FF),
+              child: const Icon(Icons.add, color: Colors.white),
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -173,8 +180,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
             icon: Material(
               type: MaterialType.transparency,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: _selectedIndex == 0
                       ? const Color(0xFF6C63FF).withOpacity(0.1)
@@ -184,9 +190,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                 child: SvgPicture.asset(
                   'assets/icons/home.svg',
                   colorFilter: ColorFilter.mode(
-                    _selectedIndex == 0
-                        ? const Color(0xFF6C63FF)
-                        : Colors.black,
+                    _selectedIndex == 0 ? const Color(0xFF6C63FF) : Colors.black,
                     BlendMode.srcIn,
                   ),
                 ),
@@ -198,8 +202,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
             icon: Material(
               type: MaterialType.transparency,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: _selectedIndex == 1
                       ? const Color(0xFF6C63FF).withOpacity(0.1)
@@ -209,9 +212,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
                 child: SvgPicture.asset(
                   'assets/icons/bell.svg',
                   colorFilter: ColorFilter.mode(
-                    _selectedIndex == 1
-                        ? const Color(0xFF6C63FF)
-                        : Colors.black,
+                    _selectedIndex == 1 ? const Color(0xFF6C63FF) : Colors.black,
                     BlendMode.srcIn,
                   ),
                 ),
@@ -224,6 +225,67 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
         unselectedItemColor: Colors.black,
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: true,
+      ),
+    );
+  }
+
+  void _showCreatePostDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          left: 16,
+          right: 16,
+          top: 16,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'Create New Post',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            const TextField(
+              maxLines: 4,
+              decoration: InputDecoration(
+                hintText: 'What would you like to announce?',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () {
+                // TODO: Implement image picker
+              },
+              icon: const Icon(Icons.image),
+              label: const Text('Add Images'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                // TODO: Implement post creation in Firebase
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF6C63FF),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+              ),
+              child: const Text('Post'),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }
