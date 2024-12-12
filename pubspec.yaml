@@ -91,6 +91,5 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
   assets:
-    - assets/login_illus.svg
-    - assets/google_logo.svg
+    - assets/illustrations/
     - assets/icons/

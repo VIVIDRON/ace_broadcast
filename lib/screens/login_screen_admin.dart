@@ -5,8 +5,8 @@ import 'package:flutter/painting.dart';
 // TODO: Remove this import when Firebase is setup
 // import 'package:atharva_coe/services/auth_service.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginScreenAdmin extends StatelessWidget {
+  const LoginScreenAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 20,),
                 // Login illustration
                 SvgPicture.asset(
-                  'assets/login_illus.svg',
+                  'assets/illustrations/login_prof_illus.svg',
                   height: 200,
                 ),
                 const SizedBox(height: 40),
@@ -87,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomeScreen(isAdmin: false),
+                          builder: (context) => const HomeScreen(isAdmin: true),
                         ),
                       );
                       // }
@@ -151,7 +151,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     icon: SvgPicture.asset(
-                      'assets/google_logo.svg',
+                      'assets/icons/google_logo.svg',
                       height: 24,
                     ),
                     label: const Text('Sign-in with Google'),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/notification_item.dart';
-import 'comments_screen.dart';
+//import 'comments_screen.dart';
 
 class NotificationScreen extends StatefulWidget {
   final bool isAdmin;
