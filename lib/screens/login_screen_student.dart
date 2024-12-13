@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/painting.dart';
 // TODO: Remove this import when Firebase is setup
 // import 'package:atharva_coe/services/auth_service.dart';
+import 'registration/gender_selection_screen.dart';
 
 class LoginScreenStudent extends StatelessWidget {
   const LoginScreenStudent({super.key});
@@ -14,7 +15,7 @@ class LoginScreenStudent extends StatelessWidget {
     // 1. Initialize Firebase Auth
     // 2. Implement email validation for @atharvacoe.ac.in
     // 3. Setup Google Sign In for admin authentication
-    
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -31,7 +32,9 @@ class LoginScreenStudent extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 // Login illustration
                 SvgPicture.asset(
                   'assets/illustrations/login_student_illus.svg',
@@ -76,7 +79,26 @@ class LoginScreenStudent extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const GenderSelectionScreen(),
+                          ),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.purple, // Text color
+                      ),
+                      child: const Text('Create Account?'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
                 SizedBox(
                   width: 180,
                   height: 40,
@@ -87,7 +109,8 @@ class LoginScreenStudent extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomeScreen(isAdmin: false),
+                          builder: (context) =>
+                              const HomeScreen(isAdmin: false),
                         ),
                       );
                       // }
@@ -113,7 +136,8 @@ class LoginScreenStudent extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomeScreen(isAdmin: false),
+                          builder: (context) =>
+                              const HomeScreen(isAdmin: false),
                         ),
                       );
 
@@ -157,6 +181,7 @@ class LoginScreenStudent extends StatelessWidget {
                     label: const Text('Sign-in with Google'),
                   ),
                 ),
+                const SizedBox(height: 26),
               ],
             ),
           ),
@@ -164,4 +189,4 @@ class LoginScreenStudent extends StatelessWidget {
       ),
     );
   }
-} 
+}
