@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/notification_item.dart';
-import 'comments_screen.dart';
+//import 'comments_screen.dart';
 
-class NotificationScreen extends StatelessWidget {
+class NotificationScreen extends StatefulWidget {
   final bool isAdmin;
   final Function(int) onNavigationChanged;
   final int selectedIndex;
-  final double titleSize = 28;
 
   const NotificationScreen({
     super.key,
@@ -15,6 +14,13 @@ class NotificationScreen extends StatelessWidget {
     required this.onNavigationChanged,
     required this.selectedIndex,
   });
+
+  @override
+  State<NotificationScreen> createState() => _NotificationScreenState();
+}
+
+class _NotificationScreenState extends State<NotificationScreen> {
+  final double titleSize = 28;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +38,7 @@ class NotificationScreen extends StatelessWidget {
       ),
       // TODO: Implement StreamBuilder for real-time notifications
       // StreamBuilder<QuerySnapshot>(
-      //   stream: isAdmin 
+      //   stream: widget.isAdmin 
       //     ? FirebaseFirestore.instance
       //         .collection('notifications')
       //         .where('adminId', isEqualTo: currentUserId)
@@ -46,7 +52,7 @@ class NotificationScreen extends StatelessWidget {
       body: ListView(
         children: [
           // Temporary static notifications for UI testing
-          if (isAdmin) ...[
+          if (widget.isAdmin) ...[
             NotificationItem(
               profileUrl: 'student1.jpg',
               name: 'John Doe',
@@ -100,8 +106,8 @@ class NotificationScreen extends StatelessWidget {
           highlightColor: Colors.transparent,
         ),
         child: BottomNavigationBar(
-          currentIndex: selectedIndex,
-          onTap: onNavigationChanged,
+          currentIndex: widget.selectedIndex,
+          onTap: widget.onNavigationChanged,
           backgroundColor: Colors.white,
           elevation: 0,
           items: [
@@ -112,7 +118,7 @@ class NotificationScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: selectedIndex == 0
+                    color: widget.selectedIndex == 0
                         ? const Color(0xFF6C63FF).withOpacity(0.1)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(20),
@@ -120,7 +126,7 @@ class NotificationScreen extends StatelessWidget {
                   child: SvgPicture.asset(
                     'assets/icons/home.svg',
                     colorFilter: ColorFilter.mode(
-                      selectedIndex == 0
+                      widget.selectedIndex == 0
                           ? const Color(0xFF6C63FF)
                           : Colors.black,
                       BlendMode.srcIn,
@@ -137,7 +143,7 @@ class NotificationScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: selectedIndex == 1
+                    color: widget.selectedIndex == 1
                         ? const Color(0xFF6C63FF).withOpacity(0.1)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(20),
@@ -145,7 +151,7 @@ class NotificationScreen extends StatelessWidget {
                   child: SvgPicture.asset(
                     'assets/icons/bell.svg',
                     colorFilter: ColorFilter.mode(
-                      selectedIndex == 1
+                      widget.selectedIndex == 1
                           ? const Color(0xFF6C63FF)
                           : Colors.black,
                       BlendMode.srcIn,

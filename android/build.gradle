@@ -6,8 +6,13 @@ buildscript {
     }
 
     dependencies {
+<<<<<<< HEAD
         classpath 'com.android.tools.build:gradle:8.2.0'
         classpath 'com.google.gms:google-services:4.4.1'
+=======
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.google.gms:google-services:4.3.15'
+>>>>>>> ab3d733aaf3828d77637769ca53a36b97ed7112a
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }

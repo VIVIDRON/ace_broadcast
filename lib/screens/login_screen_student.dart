@@ -1,28 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:post_ace/screens/signup_screen.dart';
 import 'home_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/painting.dart';
 // TODO: Remove this import when Firebase is setup
 // import 'package:atharva_coe/services/auth_service.dart';
+import 'registration/gender_selection_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final _email = TextEditingController();
-  final _password = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-    _email.dispose();
-    _password.dispose();
-  }
+class LoginScreenStudent extends StatelessWidget {
+  const LoginScreenStudent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +37,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 // Login illustration
                 SvgPicture.asset(
-                  'assets/login_illus.svg',
+                  'assets/illustrations/login_student_illus.svg',
                   height: 200,
                 ),
                 const SizedBox(height: 40),
                 TextField(
-                  controller: _email,
                   decoration: InputDecoration(
                     prefixIcon: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -77,7 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextField(
-                  controller: _password,
                   obscureText: true,
                   decoration: InputDecoration(
                     prefixIcon: Padding(
@@ -96,7 +79,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const GenderSelectionScreen(),
+                          ),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.purple, // Text color
+                      ),
+                      child: const Text('Create Account?'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
                 SizedBox(
                   width: 180,
                   height: 40,
@@ -123,32 +125,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text('Login'),
                   ),
                 ),
-                SizedBox(
-                  width: 180,
-                  height: 40,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // TODO: Implement email validation
-                      // if (email.endsWith('@atharvacoe.ac.in')) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const SignIn(),
-                        ),
-                      );
-                      // }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF6C63FF),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    child: const Text('create account'),
-                  ),
-                ),
                 const SizedBox(height: 26),
                 SizedBox(
                   width: 250,
@@ -160,7 +136,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomeScreen(isAdmin: true),
+                          builder: (context) =>
+                              const HomeScreen(isAdmin: false),
                         ),
                       );
 
@@ -198,12 +175,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     icon: SvgPicture.asset(
-                      'assets/google_logo.svg',
+                      'assets/icons/google_logo.svg',
                       height: 24,
                     ),
                     label: const Text('Sign-in with Google'),
                   ),
                 ),
+                const SizedBox(height: 26),
               ],
             ),
           ),
