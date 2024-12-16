@@ -4,16 +4,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/painting.dart';
 import 'package:post_ace/screens/home_screen.dart';
 import 'package:post_ace/screens/login_screen_admin.dart';
+import 'package:post_ace/screens/login_screen_student.dart';
 import 'package:post_ace/services/auth_service.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class SignInStudent extends StatefulWidget {
+  const SignInStudent({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignInStudent> createState() => _SignInStudentState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInStudentState extends State<SignInStudent> {
   final AuthService _auth = AuthService();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
@@ -31,12 +32,23 @@ class _SignInState extends State<SignIn> {
       String Email = _email.text;
       String Password = _password.text;
 
+      if (!Email.endsWith('@atharvacoe.ac.in')) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please use your college email address'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+        return;
+      }
+
       User? user = await _auth.createUserWithEmailId(Email, Password);
 
       if (user != null) {
         print("user Succefully register");
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()));
+            MaterialPageRoute(builder: (context) => const LoginScreenStudent()));
       } else {
         print("UnsuccessFull");
       }

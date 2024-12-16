@@ -1,24 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:post_ace/screens/signup_screen.dart';
+import 'package:post_ace/services/auth_service.dart';
 import 'home_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/painting.dart';
 // TODO: Remove this import when Firebase is setup
 // import 'package:atharva_coe/services/auth_service.dart';
 
-<<<<<<< HEAD:lib/screens/login_screen.dart
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-=======
-class LoginScreenAdmin extends StatelessWidget {
-  const LoginScreenAdmin({super.key});
->>>>>>> ab3d733aaf3828d77637769ca53a36b97ed7112a:lib/screens/login_screen_admin.dart
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final AuthService _auth = AuthService();
   final _email = TextEditingController();
   final _password = TextEditingController();
 
@@ -31,6 +29,37 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    void _login() async {
+      String Email = _email.text;
+      String Password = _password.text;
+
+      final User? user = await _auth.loginUserWithEmailId(Email, Password);
+      if (user != null) {
+        print("User Successfully logged in");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login Successful!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const HomeScreen(
+                      isAdmin: true,
+                    )));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login UnSuccessful!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+
     // TODO: Firebase Auth setup
     // 1. Initialize Firebase Auth
     // 2. Implement email validation for @atharvacoe.ac.in
@@ -106,22 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 180,
                   height: 40,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // TODO: Implement email validation
-                      // if (email.endsWith('@atharvacoe.ac.in')) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-<<<<<<< HEAD:lib/screens/login_screen.dart
-                          builder: (context) =>
-                              const HomeScreen(isAdmin: false),
-=======
-                          builder: (context) => const HomeScreen(isAdmin: true),
->>>>>>> ab3d733aaf3828d77637769ca53a36b97ed7112a:lib/screens/login_screen_admin.dart
-                        ),
-                      );
-                      // }
-                    },
+                    onPressed: _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF6C63FF),
                       foregroundColor: Colors.white,
@@ -142,8 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              const SignIn(),
+                          builder: (context) => const SignIn(),
                         ),
                       );
                       // }
@@ -163,43 +176,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 250,
                   height: 50,
                   child: OutlinedButton.icon(
-                    onPressed: () {
-                      // TODO: Implement Firebase Google Sign In
-                      // For now, just navigate to admin screen
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(isAdmin: true),
-                        ),
-                      );
-
-                      // TODO: Uncomment this when Firebase is setup
-                      // final authService = AuthService();
-                      // final user = await authService.signInWithGoogle();
-                      // if (user != null && context.mounted) {
-                      //   if (user.email.endsWith('@admin.atharvacoe.ac.in')) {
-                      //     Navigator.pushReplacement(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //         builder: (context) => const AdminHomeScreen(),
-                      //       ),
-                      //     );
-                      //   } else if (user.email.endsWith('@atharvacoe.ac.in')) {
-                      //     Navigator.pushReplacement(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //         builder: (context) => const StudentHomeScreen(),
-                      //       ),
-                      //     );
-                      //   } else {
-                      //     ScaffoldMessenger.of(context).showSnackBar(
-                      //       const SnackBar(
-                      //         content: Text('Please use your college email address'),
-                      //       ),
-                      //     );
-                      //     await authService.signOut();
-                      //   }
-                      // }
+                    onPressed: () async {
+                      final UserCredential? userCred =
+                          await _auth.loginWithGoggle();
+                      if (userCred != null && context.mounted) {
+                        print("User Successfully logged in");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Login Successful!'),
+                            backgroundColor: Colors.green,
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const HomeScreen(isAdmin: true),
+                          ),
+                        );
+                      }
                     },
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(

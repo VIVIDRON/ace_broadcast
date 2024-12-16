@@ -3,12 +3,27 @@ import 'package:google_sign_in/google_sign_in.dart';
 // import '../models/user_model.dart';
 
 class AuthService {
-  final _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   // final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  Future<UserCredential?> loginWithGoggle() async {
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+
+      final googleAuth = await googleUser?.authentication;
+
+      final cred = GoogleAuthProvider.credential(
+          idToken: googleAuth?.idToken, accessToken: googleAuth?.accessToken);
+
+      return await _auth.signInWithCredential(cred);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   Future<User?> createUserWithEmailId(String email, String password) async {
     try {
-      final cred = await _auth.createUserWithEmailAndPassword(
+      final UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       return cred.user;
     } catch (e) {
@@ -28,9 +43,9 @@ class AuthService {
     return null;
   }
 
-  Future<User?> signOut() async{
-    try{
-       await _auth.signOut();
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
     } catch (e) {
       print(e);
     }
