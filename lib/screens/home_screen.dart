@@ -4,13 +4,23 @@ import '../data/posts_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../screens/comments_screen.dart';
 import '../screens/notification_screen.dart';
+import 'package:intl/intl.dart';
 import '../widgets/scroll_behavior.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../widgets/profile_picture.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isAdmin;
+  final String userName;
+  final String profileUrl;
 
-  const HomeScreen({super.key, required this.isAdmin});
+  const HomeScreen({
+    super.key,
+    required this.isAdmin,
+    required this.userName,
+    required this.profileUrl,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -18,18 +28,24 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
+  TextEditingController _messageController = TextEditingController();
   double _titleSize = 28;
   int _selectedIndex = 0;
+
+  List<Message> messages = [];
 
   @override
   void initState() {
     super.initState();
+    _messageController = TextEditingController();
+    _fetchMessages();
     _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _messageController.dispose();
     super.dispose();
   }
 
@@ -49,25 +65,71 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _fetchMessages() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://192.168.2.106:5000/api/post/getMsg'),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('API Response: $data'); 
+        final List<dynamic> messagesData = data['data'] ?? [];
+        print('Messages Data: $messagesData'); 
+        setState(() {
+          messages = messagesData
+              .map((json) => Message.fromJson(json))
+              .toList()
+              .reversed
+              .toList(); 
+        });
+        
+      } else {
+        print('Error Status Code: ${response.statusCode}');
+        print('Error Response: ${response.body}');
+      }
+    } catch (e) {
+      print('Error fetching messages: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return _selectedIndex == 0
         ? Scaffold(
             appBar: AppBar(
-              title: AnimatedDefaultTextStyle(
-                duration: const Duration(milliseconds: 200),
-                style: TextStyle(
-                  fontSize: _titleSize,
-                  fontWeight: FontWeight.bold,
-                ),
-                child: const Text(
-                  'Homepage',
-                  style: TextStyle(color: Colors.black),
-                ),
+              title: Row(
+                children: [
+                  AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 200),
+                    style: TextStyle(
+                      fontSize: _titleSize,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    child: Text(
+                      'Welcome',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
               ),
-              actions: const [
-                ProfilePicture(),
-                SizedBox(width: 16),
+              actions: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ProfilePicture(
+                      profileurl: widget.profileUrl,
+                    ),
+                    Text(
+                      widget.userName,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 16),
               ],
             ),
             body: Column(
@@ -121,38 +183,38 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: ListView.builder(
                     controller: _scrollController,
-                    itemCount: PostsData.posts.length,
+                    itemCount: messages.length,
                     itemBuilder: (context, index) {
-                      final post = PostsData.posts[index];
+                      final post = messages[index];
                       return InkWell(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CommentsScreen(post: post),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => CommentsScreen(post: post),
+                          //   ),
+                          // );
                         },
                         child: PostWidget(
-                          adminName: post.adminName,
-                          timeAgo: post.timeAgo,
-                          content: post.content,
-                          imageUrls: post.imageUrls,
-                          likesCount: post.likesCount,
-                          commentsCount: post.commentsCount,
-                          isSaved: post.isSaved,
+                          adminName: post.username,
+                          timeAgo: post.getFormattedTimestamp(),
+                          content: post.message,
+                          imageUrls: [],
+                          likesCount: 41,
+                          commentsCount: 21,
+                          isSaved: post.username == widget.userName,
                           onLike: () {
                             // TODO: Implement Firebase like functionality
                           },
-                          onComment: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    CommentsScreen(post: post),
-                              ),
-                            );
-                          },
+                          // onComment: () {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           CommentsScreen(post: post),
+                          //     ),
+                          //   );
+                          // },
                           onShare: () {
                             // TODO: Implement share functionality
                           },
@@ -254,6 +316,37 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showCreatePostDialog(BuildContext context) {
+    Future<void> _postMessage() async {
+      try {
+        final response = await http.post(
+          Uri.parse(
+              'http://192.168.2.106:5000/api/post/postMsg'), // Replace with your API endpoint
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({
+            "Username": widget.userName,
+            'Message': _messageController.text,
+          }),
+        );
+
+        if (response.statusCode == 201) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Message posted successfully!')),
+            );
+            Navigator.pop(context);
+          }
+        } else {
+          throw Exception('Failed to post message');
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${e.toString()}')),
+          );
+        }
+      }
+    }
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -279,8 +372,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            const TextField(
+            TextField(
               maxLines: 4,
+              controller: _messageController,
               decoration: InputDecoration(
                 hintText: 'What would you like to announce?',
                 border: OutlineInputBorder(),
@@ -296,10 +390,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
-                // TODO: Implement post creation in Firebase
-                Navigator.pop(context);
-              },
+              onPressed: _postMessage,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF6C63FF),
                 foregroundColor: Colors.white,
@@ -312,5 +403,26 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+}
+
+class Message {
+  final String username;
+  final String message;
+   final DateTime timestamp;
+
+  Message({required this.username, required this.message , required this.timestamp});
+
+  factory Message.fromJson(Map<String, dynamic> json) {
+    print('Raw JSON: $json');
+    return Message(
+      username: json['username'] ?? '', 
+      message: json['message'] ?? '',
+      timestamp: DateTime.parse(json['timestamp'] ?? 'Just Now',),
+    );
+  }
+    String getFormattedTimestamp() {
+    final formatter = new DateFormat('MMM dd, yyyy hh:mm a');
+    return formatter.format(timestamp);
   }
 }
