@@ -35,7 +35,7 @@ class NotificationItem extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const ProfilePicture(size: 40),
+                const ProfilePicture(size: 40 , profileurl: '',),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(

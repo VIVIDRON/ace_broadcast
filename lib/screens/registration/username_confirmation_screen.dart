@@ -103,7 +103,7 @@ Container(
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const HomeScreen(isAdmin: false),
+                      builder: (context) => const HomeScreen(isAdmin: false, userName: 'Student' , profileUrl: '',),
                     ),
                     (route) => false,
                   );

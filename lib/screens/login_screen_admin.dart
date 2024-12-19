@@ -48,6 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(
                 builder: (context) => const HomeScreen(
                       isAdmin: true,
+                      userName: 'Admin',
+                      profileUrl: '',
                     )));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -177,9 +179,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 50,
                   child: OutlinedButton.icon(
                     onPressed: () async {
-                      final UserCredential? userCred =
-                          await _auth.loginWithGoggle();
+                      final UserCredential? userCred = await _auth.loginWithGoggle();
                       if (userCred != null && context.mounted) {
+                        final user = userCred.user;
                         print("User Successfully logged in");
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -191,8 +193,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const HomeScreen(isAdmin: true),
+                            builder: (context) => HomeScreen(
+                              isAdmin: true,
+                              userName: user?.displayName ?? 'User',
+                              profileUrl: user?.photoURL ?? '',
+                            ),
                           ),
                         );
                       }

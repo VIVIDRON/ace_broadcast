@@ -54,7 +54,7 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomeScreen(isAdmin: false),
+          builder: (context) => const HomeScreen(isAdmin: false, userName:  'Student',profileUrl: '',),
         ),
       );
     }
@@ -170,7 +170,8 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
                       try {
                         final UserCredential? userCred = await _auth.loginWithGoggle();
                         if (userCred != null && context.mounted) {
-                          final String? email = userCred.user?.email;
+                          final User? user = await userCred.user;
+                          final String? email = user?.email;
                           
                           if (email != null && email.endsWith('@atharvacoe.ac.in')) {
                             print("User Successfully logged in");
@@ -184,7 +185,11 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const HomeScreen(isAdmin: false),
+                                builder: (context) => HomeScreen(
+                                  isAdmin: false,
+                                  userName: user?.displayName ?? 'Student',
+                                  profileUrl: user?.photoURL ?? '',
+                                ),
                               ),
                             );
                           } else {
