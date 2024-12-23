@@ -18,8 +18,16 @@ class MyApp extends StatelessWidget {
       title: 'College Updates',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF6C63FF),
+          primary: const Color(0xFF6C63FF),
+        ),
         useMaterial3: true,
+        scaffoldBackgroundColor: Colors.grey[100],
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
       ),
       home: const SelectionScreen(),
     );
