@@ -65,9 +65,7 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start, 
-          children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           const SizedBox(height: 40),
           const Text(
             'WELCOME',
@@ -152,6 +150,36 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
                       ),
                     ),
                     const SizedBox(height: 26),
+
+                    //REMOVE THE BELOW CODE Only for testing
+                    SizedBox(
+                      width: 180,
+                      height: 40,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(
+                                isAdmin: false,
+                                userName: 'Admin',
+                                profileUrl: '',
+                              ),
+                            ),
+                          );
+                          // }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF6C63FF),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                        child: const Text('Bypass Login'),
+                      ),
+                    ),
+                    // Till Here
                   ],
                 ),
               ),

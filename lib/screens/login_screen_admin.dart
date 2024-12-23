@@ -72,65 +72,95 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(height: 120),
-             Center(
-                child: SingleChildScrollView(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // Login illustration
-                          SvgPicture.asset(
-                            'assets/illustrations/login_prof_illus.svg',
-                            height: 300,
-                          ),
-                          const SizedBox(height: 40),
-                          SizedBox(
-                            width: 250,
-                            height: 50,
-                            child: OutlinedButton.icon(
-                              onPressed: () async {
-                                final UserCredential? userCred =
-                                    await _auth.loginWithGoggle();
-                                if (userCred != null && context.mounted) {
-                                  final user = userCred.user;
-                                  print("User Successfully logged in");
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Login Successful!'),
-                                      backgroundColor: Colors.green,
-                                      duration: Duration(seconds: 2),
+            Center(
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Login illustration
+                        SvgPicture.asset(
+                          'assets/illustrations/login_prof_illus.svg',
+                          height: 300,
+                        ),
+                        const SizedBox(height: 40),
+                        SizedBox(
+                          width: 250,
+                          height: 50,
+                          child: OutlinedButton.icon(
+                            onPressed: () async {
+                              final UserCredential? userCred =
+                                  await _auth.loginWithGoggle();
+                              if (userCred != null && context.mounted) {
+                                final user = userCred.user;
+                                print("User Successfully logged in");
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Login Successful!'),
+                                    backgroundColor: Colors.green,
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomeScreen(
+                                      isAdmin: true,
+                                      userName: user?.displayName ?? 'User',
+                                      profileUrl: user?.photoURL ?? '',
                                     ),
-                                  );
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => HomeScreen(
-                                        isAdmin: true,
-                                        userName: user?.displayName ?? 'User',
-                                        profileUrl: user?.photoURL ?? '',
-                                      ),
-                                    ),
-                                  );
-                                }
-                              },
-                              style: OutlinedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
+                                  ),
+                                );
+                              }
+                            },
+                            style: OutlinedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
                               ),
-                              icon: SvgPicture.asset(
-                                'assets/icons/google_logo.svg',
-                                height: 24,
-                              ),
-                              label: const Text('Sign-in with Google'),
                             ),
+                            icon: SvgPicture.asset(
+                              'assets/icons/google_logo.svg',
+                              height: 24,
+                            ),
+                            label: const Text('Sign-in with Google'),
                           ),
-                        ]),
-                  ),
+                        ),
+
+                        //REMOVE THE BELOW CODE Only for testing
+                        SizedBox(
+                          width: 180,
+                          height: 40,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const HomeScreen(
+                                    isAdmin: true,
+                                    userName: 'Admin',
+                                    profileUrl: '',
+                                  ),
+                                ),
+                              );
+                              // }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF6C63FF),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                            child: const Text('Bypass Login'),
+                          ),
+                        ),
+                        // Till Here
+                      ]),
                 ),
               ),
+            ),
           ],
         ),
       ),
