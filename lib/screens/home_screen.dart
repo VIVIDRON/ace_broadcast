@@ -73,9 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print('API Response: $data');
+        debugPrint('API Response: $data');
         final List<dynamic> messagesData = data['data'] ?? [];
-        print('Messages Data: $messagesData');
+        debugPrint('Messages Data: $messagesData');
         setState(() {
           messages = messagesData
               .map((json) => Message.fromJson(json))
@@ -84,11 +84,11 @@ class _HomeScreenState extends State<HomeScreen> {
               .toList();
         });
       } else {
-        print('Error Status Code: ${response.statusCode}');
-        print('Error Response: ${response.body}');
+        debugPrint('Error Status Code: ${response.statusCode}');
+        debugPrint('Error Response: ${response.body}');
       }
     } catch (e) {
-      print('Error fetching messages: $e');
+      debugPrint('Error fetching messages: $e');
     }
   }
 
