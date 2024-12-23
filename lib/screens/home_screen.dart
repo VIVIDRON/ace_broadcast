@@ -29,7 +29,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
   TextEditingController _messageController = TextEditingController();
-  double _titleSize = 28;
+  double _titleSize = 40;
   int _selectedIndex = 0;
 
   List<Message> messages = [];
@@ -51,11 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onScroll() {
     final offset = _scrollController.offset;
-    const maxSize = 28.0;
-    const minSize = 20.0;
+    const maxSize = 40.0;
+    const minSize = 24.0;
 
     setState(() {
-      _titleSize = (maxSize - (offset / 50)).clamp(minSize, maxSize);
+      _titleSize = (maxSize - (offset / 30)).clamp(minSize, maxSize);
     });
   }
 
@@ -104,10 +104,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                       fontSize: _titleSize,
                       fontWeight: FontWeight.bold,
+                      color: Colors.black
                     ),
                     child: const Text(
                       'Welcome',
-                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ],
