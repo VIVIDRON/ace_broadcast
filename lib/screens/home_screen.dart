@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/post_widget.dart';
 import '../data/posts_data.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../screens/comments_screen.dart';
 import '../screens/notification_screen.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +8,7 @@ import '../widgets/scroll_behavior.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../widgets/profile_picture.dart';
+import 'package:post_ace/widgets/bottom_navbar.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isAdmin;
@@ -51,8 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onScroll() {
     final offset = _scrollController.offset;
-    final maxSize = 28.0;
-    final minSize = 20.0;
+    const maxSize = 28.0;
+    const minSize = 20.0;
 
     setState(() {
       _titleSize = (maxSize - (offset / 50)).clamp(minSize, maxSize);
@@ -73,17 +73,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print('API Response: $data'); 
+        print('API Response: $data');
         final List<dynamic> messagesData = data['data'] ?? [];
-        print('Messages Data: $messagesData'); 
+        print('Messages Data: $messagesData');
         setState(() {
           messages = messagesData
               .map((json) => Message.fromJson(json))
               .toList()
               .reversed
-              .toList(); 
+              .toList();
         });
-        
       } else {
         print('Error Status Code: ${response.statusCode}');
         print('Error Response: ${response.body}');
@@ -106,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontSize: _titleSize,
                       fontWeight: FontWeight.bold,
                     ),
-                    child: Text(
+                    child: const Text(
                       'Welcome',
                       style: TextStyle(color: Colors.black),
                     ),
@@ -122,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Text(
                       widget.userName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 10,
                         color: Colors.black87,
                       ),
@@ -199,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           adminName: post.username,
                           timeAgo: post.getFormattedTimestamp(),
                           content: post.message,
-                          imageUrls: [],
+                          imageUrls: const [],
                           likesCount: 41,
                           commentsCount: 21,
                           isSaved: post.username == widget.userName,
@@ -237,76 +236,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: const Icon(Icons.add, color: Colors.white),
                   )
                 : null,
-            bottomNavigationBar: Theme(
-              data: Theme.of(context).copyWith(
-                splashFactory:
-                    NoSplash.splashFactory, // Disables the ripple effect
-                highlightColor:
-                    Colors.transparent, // Removes highlight on long press
-              ),
-              child: BottomNavigationBar(
-                currentIndex: _selectedIndex,
-                onTap: _onNavigationChanged,
-                backgroundColor: Colors.white,
-                elevation: 0,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Material(
-                      type: MaterialType.transparency,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: _selectedIndex == 0
-                              ? const Color(0xFF6C63FF).withOpacity(0.1)
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: SvgPicture.asset(
-                          'assets/icons/home.svg',
-                          colorFilter: ColorFilter.mode(
-                            _selectedIndex == 0
-                                ? const Color(0xFF6C63FF)
-                                : Colors.black,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
-                    ),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Material(
-                      type: MaterialType.transparency,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: _selectedIndex == 1
-                              ? const Color(0xFF6C63FF).withOpacity(0.1)
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: SvgPicture.asset(
-                          'assets/icons/bell.svg',
-                          colorFilter: ColorFilter.mode(
-                            _selectedIndex == 1
-                                ? const Color(0xFF6C63FF)
-                                : Colors.black,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
-                    ),
-                    label: 'Notifications',
-                  ),
-                ],
-                selectedItemColor: const Color(0xFF6C63FF),
-                unselectedItemColor: Colors.black,
-                type: BottomNavigationBarType.fixed,
-                showUnselectedLabels: true,
-              ),
+
+            // Bottom Navigation Bar
+            bottomNavigationBar: CustomBottomNav(
+              selectedIndex: _selectedIndex,
+              onTabChange: _onNavigationChanged,
             ),
+
           )
         : NotificationScreen(
             isAdmin: widget.isAdmin,
@@ -316,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showCreatePostDialog(BuildContext context) {
-    Future<void> _postMessage() async {
+    Future<void> postMessage() async {
       try {
         final response = await http.post(
           Uri.parse(
@@ -375,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
             TextField(
               maxLines: 4,
               controller: _messageController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'What would you like to announce?',
                 border: OutlineInputBorder(),
               ),
@@ -390,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _postMessage,
+              onPressed: postMessage,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF6C63FF),
                 foregroundColor: Colors.white,
@@ -409,20 +345,23 @@ class _HomeScreenState extends State<HomeScreen> {
 class Message {
   final String username;
   final String message;
-   final DateTime timestamp;
+  final DateTime timestamp;
 
-  Message({required this.username, required this.message , required this.timestamp});
+  Message(
+      {required this.username, required this.message, required this.timestamp});
 
   factory Message.fromJson(Map<String, dynamic> json) {
     print('Raw JSON: $json');
     return Message(
-      username: json['username'] ?? '', 
+      username: json['username'] ?? '',
       message: json['message'] ?? '',
-      timestamp: DateTime.parse(json['timestamp'] ?? 'Just Now',),
+      timestamp: DateTime.parse(
+        json['timestamp'] ?? 'Just Now',
+      ),
     );
   }
-    String getFormattedTimestamp() {
-    final formatter = new DateFormat('MMM dd, yyyy hh:mm a');
+  String getFormattedTimestamp() {
+    final formatter = DateFormat('MMM dd, yyyy hh:mm a');
     return formatter.format(timestamp);
   }
 }

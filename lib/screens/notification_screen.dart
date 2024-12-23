@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:post_ace/widgets/bottom_navbar.dart';
 import '../widgets/notification_item.dart';
 //import 'comments_screen.dart';
 
@@ -38,7 +38,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
       // TODO: Implement StreamBuilder for real-time notifications
       // StreamBuilder<QuerySnapshot>(
-      //   stream: widget.isAdmin 
+      //   stream: widget.isAdmin
       //     ? FirebaseFirestore.instance
       //         .collection('notifications')
       //         .where('adminId', isEqualTo: currentUserId)
@@ -100,74 +100,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ],
         ],
       ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          splashFactory: NoSplash.splashFactory,
-          highlightColor: Colors.transparent,
-        ),
-        child: BottomNavigationBar(
-          currentIndex: widget.selectedIndex,
-          onTap: widget.onNavigationChanged,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          items: [
-            BottomNavigationBarItem(
-              icon: Material(
-                type: MaterialType.transparency,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: widget.selectedIndex == 0
-                        ? const Color(0xFF6C63FF).withOpacity(0.1)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: SvgPicture.asset(
-                    'assets/icons/home.svg',
-                    colorFilter: ColorFilter.mode(
-                      widget.selectedIndex == 0
-                          ? const Color(0xFF6C63FF)
-                          : Colors.black,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-              ),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Material(
-                type: MaterialType.transparency,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: widget.selectedIndex == 1
-                        ? const Color(0xFF6C63FF).withOpacity(0.1)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: SvgPicture.asset(
-                    'assets/icons/bell.svg',
-                    colorFilter: ColorFilter.mode(
-                      widget.selectedIndex == 1
-                          ? const Color(0xFF6C63FF)
-                          : Colors.black,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-              ),
-              label: 'Notifications',
-            ),
-          ],
-          selectedItemColor: const Color(0xFF6C63FF),
-          unselectedItemColor: Colors.black,
-          type: BottomNavigationBarType.fixed,
-          showUnselectedLabels: true,
-        ),
-      ),
+
+      // Bottom Navigation Bar
+      bottomNavigationBar: CustomBottomNav(
+          selectedIndex: widget.selectedIndex,
+          onTabChange: widget.onNavigationChanged),
     );
   }
 }
