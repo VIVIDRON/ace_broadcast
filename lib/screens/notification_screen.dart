@@ -7,12 +7,14 @@ class NotificationScreen extends StatefulWidget {
   final bool isAdmin;
   final Function(int) onNavigationChanged;
   final int selectedIndex;
+  final PageController pageController;
 
   const NotificationScreen({
     super.key,
     required this.isAdmin,
     required this.onNavigationChanged,
     required this.selectedIndex,
+    required this.pageController,
   });
 
   @override
@@ -100,11 +102,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ],
         ],
       ),
-
-      // Bottom Navigation Bar
-      bottomNavigationBar: CustomBottomNav(
-          selectedIndex: widget.selectedIndex,
-          onTabChange: widget.onNavigationChanged),
     );
   }
 }

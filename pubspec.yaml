@@ -36,7 +36,7 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.0.10
   google_nav_bar: ^5.0.7
-  google_sign_in: ^6.1.23
+  google_sign_in: ^6.2.2
   http: ^1.2.0
   intl: ^0.18.0
 

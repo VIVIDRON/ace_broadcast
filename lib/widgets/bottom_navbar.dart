@@ -2,14 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomBottomNav extends StatelessWidget {
+class CustomBottomNav extends StatefulWidget {
   final int selectedIndex;
   final Function(int) onTabChange;
+  final PageController pageController;
+  
   const CustomBottomNav({
     super.key,
     required this.selectedIndex,
     required this.onTabChange,
+    required this.pageController, 
   });
+
+  @override
+  State<CustomBottomNav> createState() => _CustomBottomNavState();
+}
+
+
+class _CustomBottomNavState extends State<CustomBottomNav> {
+  void _onItemTapped(int index){
+    widget.onTabChange(index);
+    widget.pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.linearToEaseOut);
+  }
 
 @override
   Widget build(BuildContext context) {
@@ -47,7 +61,7 @@ class CustomBottomNav extends StatelessWidget {
                   leading: SvgPicture.asset(
                     'assets/icons/home.svg',
                     colorFilter: ColorFilter.mode(
-                      selectedIndex == 0 ? const Color(0xFF6C63FF) : Colors.black,
+                      widget.selectedIndex == 0 ? const Color(0xFF6C63FF) : Colors.black,
                       BlendMode.srcIn,
                     ),
                   ),
@@ -58,14 +72,14 @@ class CustomBottomNav extends StatelessWidget {
                   leading: SvgPicture.asset(
                     'assets/icons/bell.svg',
                     colorFilter: ColorFilter.mode(
-                      selectedIndex == 1 ? const Color(0xFF6C63FF) : Colors.black,
+                      widget.selectedIndex == 1 ? const Color(0xFF6C63FF) : Colors.black,
                       BlendMode.srcIn,
                     ),
                   ),
                 ),
               ],
-              selectedIndex: selectedIndex,
-              onTabChange: onTabChange,
+              selectedIndex: widget.selectedIndex,
+              onTabChange: _onItemTapped,
             ),
           ),
         ),

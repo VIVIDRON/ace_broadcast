@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController _messageController = TextEditingController();
   double _titleSize = 40;
   int _selectedIndex = 0;
+  final PageController _pageController = PageController();
 
   List<Message> messages = [];
 
@@ -46,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _scrollController.dispose();
     _messageController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -94,161 +96,163 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _selectedIndex == 0
-        ? Scaffold(
-            appBar: AppBar(
+    return Scaffold(
+      appBar: _selectedIndex == 0
+          ? AppBar(
               title: Row(
                 children: [
                   AnimatedDefaultTextStyle(
                     duration: const Duration(milliseconds: 200),
                     style: TextStyle(
-                      fontSize: _titleSize,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black
-                    ),
+                        fontSize: _titleSize,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
                     child: const Text(
                       'Welcome',
                     ),
                   ),
                 ],
               ),
-              actions: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ProfilePicture(
-                      profileurl: widget.profileUrl,
-                    ),
-                    Text(
-                      widget.userName,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: Colors.black87,
+            )
+          : null,
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        children: [
+          Column(
+            children: [
+              ScrollToHideWidget(
+                controller: _scrollController,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: TextField(
+                    textAlignVertical: TextAlignVertical.center,
+                    style: const TextStyle(fontSize: 16),
+                    decoration: InputDecoration(
+                      hintText: 'Search posts...',
+                      hintStyle: const TextStyle(
+                        color: Color.fromARGB(255, 170, 170, 170),
+                        fontSize: 16,
                       ),
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Icon(Icons.search, color: Colors.grey[400]),
+                      ),
+                      prefixIconConstraints: const BoxConstraints(
+                        minWidth: 48,
+                        minHeight: 48,
+                      ),
+                      filled: true,
+                      fillColor: const Color.fromARGB(255, 255, 255, 255),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: const BorderSide(color: Colors.black),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: const BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: const BorderSide(color: Colors.black),
+                      ),
+                      isDense: false,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 16),
                     ),
-                  ],
+                    onChanged: (value) {
+                      // TODO: Implement Firestore search query
+                    },
+                  ),
                 ),
-                const SizedBox(width: 16),
-              ],
-            ),
-            body: Column(
-              children: [
-                ScrollToHideWidget(
+              ),
+              Expanded(
+                child: ListView.builder(
                   controller: _scrollController,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8.0),
-                    child: TextField(
-                      textAlignVertical: TextAlignVertical.center,
-                      style: const TextStyle(fontSize: 16),
-                      decoration: InputDecoration(
-                        hintText: 'Search posts...',
-                        hintStyle: const TextStyle(
-                          color: Color.fromARGB(255, 170, 170, 170),
-                          fontSize: 16,
-                        ),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Icon(Icons.search, color: Colors.grey[400]),
-                        ),
-                        prefixIconConstraints: const BoxConstraints(
-                          minWidth: 48,
-                          minHeight: 48,
-                        ),
-                        filled: true,
-                        fillColor: const Color.fromARGB(255, 255, 255, 255),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: const BorderSide(color: Colors.black),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: const BorderSide(color: Colors.black),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: const BorderSide(color: Colors.black),
-                        ),
-                        isDense: false,
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 16),
-                      ),
-                      onChanged: (value) {
-                        // TODO: Implement Firestore search query
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final post = messages[index];
+                    return InkWell(
+                      onTap: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CommentsScreen(post: post),
+                        //   ),
+                        // );
                       },
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final post = messages[index];
-                      return InkWell(
-                        onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => CommentsScreen(post: post),
-                          //   ),
-                          // );
+                      child: PostWidget(
+                        adminName: post.username,
+                        timeAgo: post.getFormattedTimestamp(),
+                        content: post.message,
+                        imageUrls: const [],
+                        likesCount: 41,
+                        commentsCount: 21,
+                        isSaved: post.username == widget.userName,
+                        onLike: () {
+                          // TODO: Implement Firebase like functionality
                         },
-                        child: PostWidget(
-                          adminName: post.username,
-                          timeAgo: post.getFormattedTimestamp(),
-                          content: post.message,
-                          imageUrls: const [],
-                          likesCount: 41,
-                          commentsCount: 21,
-                          isSaved: post.username == widget.userName,
-                          onLike: () {
-                            // TODO: Implement Firebase like functionality
-                          },
-                          // onComment: () {
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           CommentsScreen(post: post),
-                          //     ),
-                          //   );
-                          // },
-                          onShare: () {
-                            // TODO: Implement share functionality
-                          },
-                          onSave: () {
-                            // TODO: Implement Firebase save functionality
-                          },
-                        ),
-                      );
-                    },
-                  ),
+                        // onComment: () {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           CommentsScreen(post: post),
+                        //     ),
+                        //   );
+                        // },
+                        onShare: () {
+                          // TODO: Implement share functionality
+                        },
+                        onSave: () {
+                          // TODO: Implement Firebase save functionality
+                        },
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
-            floatingActionButton: widget.isAdmin
-                ? FloatingActionButton(
-                    onPressed: () {
-                      _showCreatePostDialog(context);
-                    },
-                    backgroundColor: const Color(0xFF6C63FF),
-                    child: const Icon(Icons.add, color: Colors.white),
-                  )
-                : null,
+              ),
+            ],
+          ),
 
-            // Bottom Navigation Bar
-            bottomNavigationBar: CustomBottomNav(
-              selectedIndex: _selectedIndex,
-              onTabChange: _onNavigationChanged,
-            ),
-
-          )
-        : NotificationScreen(
+          // Notification Page
+          NotificationScreen(
             isAdmin: widget.isAdmin,
             onNavigationChanged: _onNavigationChanged,
             selectedIndex: _selectedIndex,
+            pageController: _pageController,
+          ),
+        ],
+      ),
+      floatingActionButton: _selectedIndex == 0 && widget.isAdmin
+          ? FloatingActionButton(
+              onPressed: () {
+                _showCreatePostDialog(context);
+              },
+              backgroundColor: const Color(0xFF6C63FF),
+              child: const Icon(Icons.add, color: Colors.white),
+            )
+          : null,
+      bottomNavigationBar: CustomBottomNav(
+        selectedIndex: _selectedIndex,
+        onTabChange: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
           );
+        },
+        pageController: _pageController,
+      ),
+    );
   }
 
   void _showCreatePostDialog(BuildContext context) {
