@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:post_ace/screens/profile_page.dart';
 import '../widgets/post_widget.dart';
 import '../data/posts_data.dart';
 import '../screens/comments_screen.dart';
@@ -7,7 +8,6 @@ import 'package:intl/intl.dart';
 import '../widgets/scroll_behavior.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../widgets/profile_picture.dart';
 import 'package:post_ace/widgets/bottom_navbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,7 +29,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
   TextEditingController _messageController = TextEditingController();
-  double _titleSize = 40;
+  double _titleSize = 30;
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
 
@@ -97,24 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _selectedIndex == 0
-          ? AppBar(
-              title: Row(
-                children: [
-                  AnimatedDefaultTextStyle(
-                    duration: const Duration(milliseconds: 200),
-                    style: TextStyle(
-                        fontSize: _titleSize,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                    child: const Text(
-                      'Welcome',
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : null,
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
@@ -123,105 +105,125 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         children: [
-          Column(
-            children: [
-              ScrollToHideWidget(
-                controller: _scrollController,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
-                  child: TextField(
-                    textAlignVertical: TextAlignVertical.center,
-                    style: const TextStyle(fontSize: 16),
-                    decoration: InputDecoration(
-                      hintText: 'Search posts...',
-                      hintStyle: const TextStyle(
-                        color: Color.fromARGB(255, 170, 170, 170),
-                        fontSize: 16,
+          Scaffold(
+            appBar: AppBar(
+              title: AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 200),
+                style: TextStyle(
+                  fontSize: _titleSize,
+                  fontWeight: FontWeight.bold,
+                ),
+                child:
+                    const Text('Home', style: TextStyle(color: Colors.black)),
+              ),
+            ),
+            body: Column(
+              children: [
+                ScrollToHideWidget(
+                  controller: _scrollController,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: TextField(
+                      textAlignVertical: TextAlignVertical.center,
+                      style: const TextStyle(fontSize: 16),
+                      decoration: InputDecoration(
+                        hintText: 'Search posts...',
+                        hintStyle: const TextStyle(
+                          color: Color.fromARGB(255, 170, 170, 170),
+                          fontSize: 16,
+                        ),
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Icon(Icons.search, color: Colors.grey[400]),
+                        ),
+                        prefixIconConstraints: const BoxConstraints(
+                          minWidth: 48,
+                          minHeight: 48,
+                        ),
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 255, 255, 255),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(color: Colors.black),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(color: Colors.black),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(color: Colors.black),
+                        ),
+                        isDense: false,
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 16),
                       ),
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Icon(Icons.search, color: Colors.grey[400]),
-                      ),
-                      prefixIconConstraints: const BoxConstraints(
-                        minWidth: 48,
-                        minHeight: 48,
-                      ),
-                      filled: true,
-                      fillColor: const Color.fromARGB(255, 255, 255, 255),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(color: Colors.black),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(color: Colors.black),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(color: Colors.black),
-                      ),
-                      isDense: false,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 16),
+                      onChanged: (value) {
+                        // TODO: Implement Firestore search query
+                      },
                     ),
-                    onChanged: (value) {
-                      // TODO: Implement Firestore search query
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final post = messages[index];
+                      return InkWell(
+                        onTap: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => CommentsScreen(post: post),
+                          //   ),
+                          // );
+                        },
+                        child: PostWidget(
+                          adminName: post.username,
+                          timeAgo: post.getFormattedTimestamp(),
+                          content: post.message,
+                          imageUrls: const [],
+                          likesCount: 41,
+                          commentsCount: 21,
+                          isSaved: post.username == widget.userName,
+                          onLike: () {
+                            // TODO: Implement Firebase like functionality
+                          },
+                          // onComment: () {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           CommentsScreen(post: post),
+                          //     ),
+                          //   );
+                          // },
+                          onShare: () {
+                            // TODO: Implement share functionality
+                          },
+                          onSave: () {
+                            // TODO: Implement Firebase save functionality
+                          },
+                        ),
+                      );
                     },
                   ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    final post = messages[index];
-                    return InkWell(
-                      onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => CommentsScreen(post: post),
-                        //   ),
-                        // );
-                      },
-                      child: PostWidget(
-                        adminName: post.username,
-                        timeAgo: post.getFormattedTimestamp(),
-                        content: post.message,
-                        imageUrls: const [],
-                        likesCount: 41,
-                        commentsCount: 21,
-                        isSaved: post.username == widget.userName,
-                        onLike: () {
-                          // TODO: Implement Firebase like functionality
-                        },
-                        // onComment: () {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           CommentsScreen(post: post),
-                        //     ),
-                        //   );
-                        // },
-                        onShare: () {
-                          // TODO: Implement share functionality
-                        },
-                        onSave: () {
-                          // TODO: Implement Firebase save functionality
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
 
           // Notification Page
           NotificationScreen(
+            isAdmin: widget.isAdmin,
+            onNavigationChanged: _onNavigationChanged,
+            selectedIndex: _selectedIndex,
+            pageController: _pageController,
+          ),
+
+          ProfilePage(
             isAdmin: widget.isAdmin,
             onNavigationChanged: _onNavigationChanged,
             selectedIndex: _selectedIndex,

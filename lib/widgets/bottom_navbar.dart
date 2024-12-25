@@ -77,6 +77,15 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
                     ),
                   ),
                 ),
+                GButton(icon: Icons.person, text: 'Profile',
+                  leading: SvgPicture.asset(
+                    'assets/icons/user.svg',
+                    colorFilter: ColorFilter.mode(
+                      widget.selectedIndex == 2 ? const Color(0xFF6C63FF) : Colors.black,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                ),
               ],
               selectedIndex: widget.selectedIndex,
               onTabChange: _onItemTapped,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:post_ace/widgets/bottom_navbar.dart';
 import '../widgets/notification_item.dart';
 //import 'comments_screen.dart';
 
@@ -22,7 +21,7 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  final double titleSize = 28;
+  final double titleSize = 30;
 
   @override
   Widget build(BuildContext context) {
