@@ -27,16 +27,18 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
 
 @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.colorScheme.surfaceDim,
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
               blurRadius: 20,
-              color: Colors.black.withOpacity(.1),
+              color: theme.colorScheme.shadow,
             )
           ],
         ),
@@ -45,14 +47,14 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             child: GNav(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              rippleColor: const Color(0xFF6C63FF).withOpacity(0.2),
+              rippleColor: theme.colorScheme.primary.withOpacity(0.2),
               gap: 12,
-              activeColor: const Color(0xFF6C63FF),
+              activeColor: theme.colorScheme.primary,
               iconSize: 24,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               duration: const Duration(milliseconds: 400),
-              tabBackgroundColor: const Color(0xFF6C63FF).withOpacity(0.1),
-              color: Colors.black,
+              tabBackgroundColor: theme.colorScheme.surfaceTint,
+              color: theme.colorScheme.onSurface,
               haptic: true,
               tabs: [
                 GButton(
@@ -61,7 +63,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
                   leading: SvgPicture.asset(
                     'assets/icons/home.svg',
                     colorFilter: ColorFilter.mode(
-                      widget.selectedIndex == 0 ? const Color(0xFF6C63FF) : Colors.black,
+                      widget.selectedIndex == 0 ? theme.colorScheme.primary : theme.colorScheme.inversePrimary,
                       BlendMode.srcIn,
                     ),
                   ),
@@ -72,7 +74,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
                   leading: SvgPicture.asset(
                     'assets/icons/bell.svg',
                     colorFilter: ColorFilter.mode(
-                      widget.selectedIndex == 1 ? const Color(0xFF6C63FF) : Colors.black,
+                      widget.selectedIndex == 1 ? theme.colorScheme.primary : theme.colorScheme.inversePrimary,
                       BlendMode.srcIn,
                     ),
                   ),
@@ -81,7 +83,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
                   leading: SvgPicture.asset(
                     'assets/icons/user.svg',
                     colorFilter: ColorFilter.mode(
-                      widget.selectedIndex == 2 ? const Color(0xFF6C63FF) : Colors.black,
+                      widget.selectedIndex == 2 ? theme.colorScheme.primary : theme.colorScheme.inversePrimary,
                       BlendMode.srcIn,
                     ),
                   ),

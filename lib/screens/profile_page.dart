@@ -19,22 +19,27 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-    final double titleSize = 30;
+  final double titleSize = 30;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
         title: AnimatedDefaultTextStyle(
           duration: const Duration(milliseconds: 200),
           style: TextStyle(
             fontSize: titleSize,
             fontWeight: FontWeight.bold,
           ),
-          child: const Text('About You',
-              style: TextStyle(color: Colors.black)),
+          child: Text('About You',
+              style: TextStyle(color: theme.colorScheme.inversePrimary)),
         ),
       ),
-      );
+    );
   }
 }

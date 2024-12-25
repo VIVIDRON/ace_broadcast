@@ -15,103 +15,125 @@ class SelectionScreen extends StatefulWidget {
 class _SelectionScreenState extends State<SelectionScreen> {
   @override
   Widget build(BuildContext context) {
+      final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
-          child: Column( 
-            mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Student Section
-          InkWell(
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginScreenStudent(),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column( 
+              mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+            // Student Section
+            InkWell(
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginScreenStudent(),
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceDim,
+                  borderRadius: BorderRadius.circular(18.0),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 20,
+                      color: theme.colorScheme.shadow,
+                    )
+                  ],
                 ),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Student?',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Student?',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/illustrations/student_illus.svg',
-                          height: 200,
-                        ),
-                        SvgPicture.asset(
-                          'assets/icons/right_arrow.svg',
-                        ),
-                      ]),
-                ],
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/illustrations/student_illus.svg',
+                            height: 200,
+                          ),
+                          SvgPicture.asset(
+                            'assets/icons/right_arrow.svg',
+                            colorFilter: ColorFilter.mode(theme.colorScheme.inversePrimary, BlendMode.srcIn),
+                            height: 30,
+                          ),
+                        ]),
+                  ],
+                ),
               ),
             ),
-          ),
-
-          const SizedBox(height: 20,),
-
-          //Admin Login
-          InkWell(
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
+            
+            const SizedBox(height: 20,),
+            
+            //Admin Login
+            InkWell(
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginScreen(),
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceDim,
+                  borderRadius: BorderRadius.circular(18.0),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 20,
+                      color: theme.colorScheme.shadow,
+                    )
+                  ],
                 ),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Professor?',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Professor?',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/illustrations/professor_illus.svg',
-                          height: 200,
-                        ),
-                        SvgPicture.asset(
-                          'assets/icons/right_arrow.svg',
-                        ),  
-                      ]),
-                ],
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/illustrations/professor_illus.svg',
+                            height: 200,
+                          ),
+                          SvgPicture.asset(
+                            'assets/icons/right_arrow.svg',
+                            colorFilter: ColorFilter.mode(theme.colorScheme.inversePrimary, BlendMode.srcIn),
+                            height: 30,
+                          ),  
+                        ]),
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
-      )),
+            )
+                    ],
+                  ),
+          )),
     );
   }
 }

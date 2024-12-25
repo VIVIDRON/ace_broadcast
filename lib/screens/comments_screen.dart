@@ -23,6 +23,7 @@ class CommentsScreen extends StatelessWidget {
             timeAgo: post.timeAgo,
             content: post.content,
             imageUrls: post.imageUrls,
+            //likes: post.likes,
             likesCount: post.likesCount,
             commentsCount: post.commentsCount,
             isSaved: post.isSaved,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:post_ace/widgets/like_button.dart';
 
-class PostWidget extends StatelessWidget {
+class PostWidget extends StatefulWidget {
   final String adminName;
   final String timeAgo;
   final String content;
@@ -9,7 +10,7 @@ class PostWidget extends StatelessWidget {
   final int likesCount;
   final int commentsCount;
   final bool isSaved;
-  final bool isLiked;
+  final List<String>? likes; //list of email ids/userid who have liked the post
   final Function()? onLike;
   final Function()? onComment;
   final Function()? onShare;
@@ -20,19 +21,41 @@ class PostWidget extends StatelessWidget {
     required this.adminName,
     required this.timeAgo,
     required this.content,
+    this.likes,
     this.imageUrls,
     this.likesCount = 0,
     this.commentsCount = 0,
     this.isSaved = false,
     this.onLike,
-    this.isLiked = false,
     this.onComment,
     this.onShare,
     this.onSave,
   });
 
   @override
+  State<PostWidget> createState() => _PostWidgetState();
+}
+
+class _PostWidgetState extends State<PostWidget> {
+  @override
+  void initState() {
+    super.initState();
+    //isLiked = widget.likes.contains(currentUserId);
+  }
+
+  // TODO Update the firebase for likes
+  // void toggleLike(){
+  //   setState(() {
+  //     widget.isLiked = !widget.isLiked;
+  //   });
+  // }
+
+  // TODO Access all the email/user id in the likes list and display the count in the variable likesCount
+
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 0,
@@ -48,7 +71,7 @@ class PostWidget extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: Colors.grey[200],
               child: Text(
-                adminName[0].toUpperCase(),
+                widget.adminName[0].toUpperCase(),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
@@ -56,13 +79,13 @@ class PostWidget extends StatelessWidget {
               ),
             ),
             title: Text(
-              adminName,
+              widget.adminName,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
             subtitle: Text(
-              timeAgo,
+              widget.timeAgo,
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 12,
@@ -70,10 +93,10 @@ class PostWidget extends StatelessWidget {
             ),
             trailing: IconButton(
               icon: Icon(
-                isSaved ? Icons.star : Icons.star_border,
-                color: isSaved ? Colors.amber : Colors.grey,
+                widget.isSaved ? Icons.star : Icons.star_border,
+                color: widget.isSaved ? Colors.amber : Colors.grey,
               ),
-              onPressed: onSave,
+              onPressed: widget.onSave,
             ),
           ),
 
@@ -81,17 +104,17 @@ class PostWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
-              content,
+              widget.content,
               style: const TextStyle(fontSize: 16),
             ),
           ),
 
           // Images if any
-          if (imageUrls != null && imageUrls!.isNotEmpty) ...[
+          if (widget.imageUrls != null && widget.imageUrls!.isNotEmpty) ...[
             const SizedBox(height: 8),
-            if (imageUrls!.length == 1)
+            if (widget.imageUrls!.length == 1)
               Image.network(
-                imageUrls![0],
+                widget.imageUrls![0],
                 fit: BoxFit.cover,
               )
             else
@@ -99,17 +122,17 @@ class PostWidget extends StatelessWidget {
                 height: 200,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: imageUrls!.length,
+                  itemCount: widget.imageUrls!.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.only(
                         left: index == 0 ? 16 : 8,
-                        right: index == imageUrls!.length - 1 ? 16 : 0,
+                        right: index == widget.imageUrls!.length - 1 ? 16 : 0,
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.network(
-                          imageUrls![index],
+                          widget.imageUrls![index],
                           height: 200,
                           width: 200,
                           fit: BoxFit.cover,
@@ -126,45 +149,40 @@ class PostWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
+                const SizedBox(
+                  width: 12,
+                ),
+
+                //Like Button
+                LikeButton(isLiked: true, onTap: () {}),
+                // TODO Implement the dynamic like button
+                // LikeButton(isLiked: widget.isLiked, onTap: toggleLike),
+
+                const SizedBox(
+                  width: 5,
+                ),
+
+                //Like Counter
+                Text(widget.likesCount.toString(), style: const TextStyle(color: Colors.grey)),
+
+                const SizedBox(
+                  width: 8,
+                ),
+
                 TextButton.icon(
-                  onPressed: onLike,
+                  onPressed: widget.onComment,
                   icon: SvgPicture.asset(
-                    'assets/icons/like.svg',
-                    height: 24,
-                    width: 24,
-                    colorFilter: ColorFilter.mode(
-                      isLiked ? Colors.red : Colors.black,
+                    'assets/icons/comment.svg',
+                    height: 20,
+                    width: 20,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.grey,
                       BlendMode.srcIn,
                     ),
                   ),
-                  label: Text(
-                    '$likesCount',
-                    style: TextStyle(
-                      color: isLiked ? Colors.red : Colors.black,
-                    ),
-                  ),
+                  label: Text('${widget.commentsCount}'),
                   style: TextButton.styleFrom(
-                    foregroundColor: isLiked ? Colors.red : Colors.black,
-                  ),
-                ),
-                TextButton.icon(
-                  onPressed: onComment,
-                  icon: SvgPicture.asset(
-                    'assets/icons/comment.svg',
-                    height: 24,
-                    width: 24,
-                  ),
-                  label: Text('$commentsCount'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.black,
-                  ),
-                ),
-                TextButton.icon(
-                  onPressed: onShare,
-                  icon: const Icon(Icons.share_outlined),
-                  label: const Text('Share'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.black,
+                    foregroundColor: Colors.grey,
                   ),
                 ),
               ],

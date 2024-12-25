@@ -25,16 +25,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
         title: AnimatedDefaultTextStyle(
           duration: const Duration(milliseconds: 200),
           style: TextStyle(
             fontSize: titleSize,
             fontWeight: FontWeight.bold,
           ),
-          child: const Text('Notifications',
-              style: TextStyle(color: Colors.black)),
+          child: Text('Notifications',
+              style: TextStyle(color: theme.colorScheme.inversePrimary)),
         ),
       ),
       // TODO: Implement StreamBuilder for real-time notifications

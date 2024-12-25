@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:post_ace/utils/theme.dart';
 import 'screens/selection_screen.dart';
 import './firebase_option.dart';
 
@@ -17,13 +18,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'College Updates',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6C63FF),
-          primary: const Color(0xFF6C63FF),
-        ),
-        useMaterial3: true,
-      ),
+      themeMode: ThemeMode.system,
+      theme: lightMode,
+      darkTheme: darkMode,
       home: const SelectionScreen(),
     );
   }

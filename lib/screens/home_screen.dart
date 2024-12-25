@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _fetchMessages() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.2.106:5000/api/post/getMsg'),
+        Uri.parse('http://192.168.0.159:5000/api/post/getMsg'),
       );
 
       if (response.statusCode == 200) {
@@ -96,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: PageView(
         controller: _pageController,
@@ -107,6 +108,10 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Scaffold(
             appBar: AppBar(
+              surfaceTintColor: Colors.transparent,
+              foregroundColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
               title: AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 200),
                 style: TextStyle(
@@ -114,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.bold,
                 ),
                 child:
-                    const Text('Home', style: TextStyle(color: Colors.black)),
+                   Text('Home', style: TextStyle(color: theme.colorScheme.inversePrimary)),
               ),
             ),
             body: Column(
@@ -124,44 +129,56 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 8.0),
-                    child: TextField(
-                      textAlignVertical: TextAlignVertical.center,
-                      style: const TextStyle(fontSize: 16),
-                      decoration: InputDecoration(
-                        hintText: 'Search posts...',
-                        hintStyle: const TextStyle(
-                          color: Color.fromARGB(255, 170, 170, 170),
-                          fontSize: 16,
-                        ),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Icon(Icons.search, color: Colors.grey[400]),
-                        ),
-                        prefixIconConstraints: const BoxConstraints(
-                          minWidth: 48,
-                          minHeight: 48,
-                        ),
-                        filled: true,
-                        fillColor: const Color.fromARGB(255, 255, 255, 255),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: const BorderSide(color: Colors.black),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: const BorderSide(color: Colors.black),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: const BorderSide(color: Colors.black),
-                        ),
-                        isDense: false,
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 16),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        boxShadow: [
+                          BoxShadow(
+                            color: theme.colorScheme.shadow,
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                      onChanged: (value) {
-                        // TODO: Implement Firestore search query
-                      },
+                      child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
+                        style: const TextStyle(fontSize: 16),
+                        decoration: InputDecoration(
+                          hintText: 'Search posts...',
+                          hintStyle: TextStyle(
+                            color: theme.colorScheme.inversePrimary.withOpacity(0.5),
+                            fontSize: 16,
+                          ),
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Icon(Icons.search, color: theme.colorScheme.inversePrimary),
+                          ),
+                          prefixIconConstraints: const BoxConstraints(
+                            minWidth: 48,
+                            minHeight: 48,
+                          ),
+                          filled: true,
+                          fillColor: theme.colorScheme.surfaceDim,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: theme.colorScheme.inversePrimary.withOpacity(0.2)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide:  BorderSide(color: theme.colorScheme.inversePrimary.withOpacity(0.2)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: theme.colorScheme.primary.withOpacity(0.5)),
+                          ),
+                          isDense: false,
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 16),
+                        ),
+                        onChanged: (value) {
+                          // TODO: Implement Firestore search query
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -186,6 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           content: post.message,
                           imageUrls: const [],
                           likesCount: 41,
+                          likes: const [], //Userid of ppl of liked
                           commentsCount: 21,
                           isSaved: post.username == widget.userName,
                           onLike: () {
@@ -236,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 _showCreatePostDialog(context);
               },
-              backgroundColor: const Color(0xFF6C63FF),
+              backgroundColor: theme.colorScheme.primary,
               child: const Icon(Icons.add, color: Colors.white),
             )
           : null,
