@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         decoration: InputDecoration(
                           hintText: 'Search posts...',
                           hintStyle: TextStyle(
-                            color: theme.colorScheme.inversePrimary.withOpacity(0.5),
+                            color: theme.colorScheme.inversePrimary.withValues(alpha: 0.5),
                             fontSize: 16,
                           ),
                           prefixIcon: Padding(
@@ -161,15 +161,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           fillColor: theme.colorScheme.surfaceDim,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide(color: theme.colorScheme.inversePrimary.withOpacity(0.2)),
+                            borderSide: BorderSide(color: theme.colorScheme.inversePrimary.withValues(alpha: .2)),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
-                            borderSide:  BorderSide(color: theme.colorScheme.inversePrimary.withOpacity(0.2)),
+                            borderSide:  BorderSide(color: theme.colorScheme.inversePrimary.withValues(alpha: .2)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide(color: theme.colorScheme.primary.withOpacity(0.5)),
+                            borderSide: BorderSide(color: theme.colorScheme.primary.withValues(alpha: .5)),
                           ),
                           isDense: false,
                           contentPadding: const EdgeInsets.symmetric(

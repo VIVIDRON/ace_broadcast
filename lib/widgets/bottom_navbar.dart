@@ -47,7 +47,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             child: GNav(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              rippleColor: theme.colorScheme.primary.withOpacity(0.2),
+              rippleColor: theme.colorScheme.primary.withValues(alpha: 0.2),
               gap: 12,
               activeColor: theme.colorScheme.primary,
               iconSize: 24,
