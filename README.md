@@ -1,5 +1,13 @@
 # post_ace
 
+## Update Flutter
+
+```
+flutter upgrade
+```
+
+- Run in the terminal for updating flutter to latest version
+
 # TODO List
 
 ## Authentication
