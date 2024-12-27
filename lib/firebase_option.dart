@@ -30,31 +30,31 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions webOptions = FirebaseOptions(
-      apiKey: "AIzaSyCazkybKsgC8T3ehDcdaOSjvUajbhsX7qw",
-      authDomain: "post-ace.firebaseapp.com", 
-      databaseURL: "https://post-ace-default-rtdb.firebaseio.com",
-      projectId: "post-ace",
-      storageBucket: "post-ace.firebasestorage.app",
-      messagingSenderId: "361249630346",
-      appId: "1:361249630346:web:6cfef490f827752122e573",
-      measurementId: "G-NVSZE2HTRJ");
+      apiKey: "AIzaSyDelJRXAS9ojOV9Ewi1tAALNkOwqtU4mAI",
+      authDomain: "ace-broadcast.firebaseapp.com",
+      databaseURL: "https://ace-broadcast-default-rtdb.firebaseio.com",
+      projectId: "ace-broadcast",
+      storageBucket: "ace-broadcast.firebasestorage.app",
+      messagingSenderId: "969430829378",
+      appId: "1:969430829378:web:25c78f47d890b5710fe0db",
+      measurementId: "G-L4ETWCR5DR");
 
   static const FirebaseOptions androidOptions = FirebaseOptions(
     apiKey: 'AIzaSyCazkybKsgC8T3ehDcdaOSjvUajbhsX7qw',
-    appId: '1:361249630346:android:6cfef490f827752122e573',
-    messagingSenderId: '361249630346',
-    projectId: 'post-ace',
-    databaseURL: 'https://post-ace-default-rtdb.firebaseio.com',
-    storageBucket: 'post-ace.firebasestorage.app',
+    appId: "1:969430829378:web:25c78f47d890b5710fe0db",
+    messagingSenderId: "969430829378",
+    projectId: "ace-broadcast",
+    databaseURL: "https://ace-broadcast-default-rtdb.firebaseio.com",
+    storageBucket: "ace-broadcast.firebasestorage.app",
   );
 
   static const FirebaseOptions iosOptions = FirebaseOptions(
     apiKey: 'AIzaSyCazkybKsgC8T3ehDcdaOSjvUajbhsX7qw',
-    appId: '1:361249630346:ios:6cfef490f827752122e573',
-    messagingSenderId: '361249630346',
-    projectId: 'post-ace',
-    databaseURL: 'https://post-ace-default-rtdb.firebaseio.com',
-    storageBucket: 'post-ace.firebasestorage.app',
+    appId: "1:969430829378:web:25c78f47d890b5710fe0db",
+    messagingSenderId: "969430829378",
+    projectId: "ace-broadcast",
+    databaseURL: "https://ace-broadcast-default-rtdb.firebaseio.com",
+    storageBucket: "ace-broadcast.firebasestorage.app",
     iosClientId: '361249630346-xxxxx.apps.googleusercontent.com',
     iosBundleId: 'com.example.postAce',
   );

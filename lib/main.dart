@@ -8,15 +8,7 @@ import 'utils/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  } catch (e) {
-    Firebase.app();
-  }
-
+  await Firebase.initializeApp();
   runApp(
     ChangeNotifierProvider(
       create: (_) => ThemeProvider(),
