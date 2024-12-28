@@ -13,7 +13,7 @@ ThemeData lightMode = ThemeData(
     surfaceTint: const Color(0xFF6C63FF).withValues(alpha: 0.1),
     shadow: Colors.black.withValues(alpha: 0.1),
     inversePrimary: Colors.black,
-    surfaceDim:  Colors.white,
+    surfaceDim:  const Color(0xFFF7F7F7),
     surfaceContainer: Colors.white,
   ),
 );
@@ -32,6 +32,6 @@ ThemeData darkMode = ThemeData(
     shadow: Colors.black.withValues(alpha: 0.3),
     inversePrimary: Colors.white,
     surfaceDim: Colors.grey.shade900,
-    surfaceContainer: Colors.black,
+    surfaceContainer: const Color.fromARGB(255, 48, 45, 45),
   ),
 );

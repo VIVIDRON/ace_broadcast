@@ -35,12 +35,14 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
       child: Container(
         height: 65,
         decoration: BoxDecoration(
-          color: theme.colorScheme.surfaceDim,
+          color: theme.colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
               blurRadius: 20,
-              color: theme.colorScheme.shadow.withValues(alpha: .15),
+              color: Theme.of(context).brightness == Brightness.light
+                  ? theme.colorScheme.shadow.withValues(alpha: .15)
+                  : Colors.transparent,
             )
           ],
         ),
