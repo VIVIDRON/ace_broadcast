@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:post_ace/services/auth_service.dart';
 import 'home_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,49 +14,18 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final AuthService _auth = AuthService();
-  final _email = TextEditingController();
-  final _password = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-    _email.dispose();
-    _password.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    void login() async {
-      String Email = _email.text;
-      String Password = _password.text;
 
-      final User? user = await _auth.loginUserWithEmailId(Email, Password);
-      if (user != null) {
-        print("User Successfully logged in");
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Login Successful!'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-          ),
-        );
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const HomeScreen(
-                      isAdmin: true,
-                      userName: 'Admin',
-                      profileUrl: '',
-                    )));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Login UnSuccessful!'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-          ),
-        );
-      }
+    void showToast(String message) {
+      Fluttertoast.showToast(
+          msg: message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+          textColor: Theme.of(context).colorScheme.onSurface,
+          fontSize: 16.0);
     }
 
     return Scaffold(
@@ -96,13 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (userCred != null && context.mounted) {
                                 final user = userCred.user;
                                 print("User Successfully logged in");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Login Successful!'),
-                                    backgroundColor: Colors.green,
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
+                                showToast('Login Successful!');
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -157,7 +121,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         // Till Here
-
                       ]),
                 ),
               ),

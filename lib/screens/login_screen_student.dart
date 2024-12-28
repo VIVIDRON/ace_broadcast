@@ -3,6 +3,7 @@ import 'home_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:post_ace/services/auth_service.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreenStudent extends StatefulWidget {
   const LoginScreenStudent({super.key});
@@ -13,56 +14,20 @@ class LoginScreenStudent extends StatefulWidget {
 
 class _LoginScreenStudentState extends State<LoginScreenStudent> {
   final AuthService _auth = AuthService();
-  final _email = TextEditingController();
-  final _password = TextEditingController();
-
-  @override
-  void dispose() {
-    _email.dispose();
-    _password.dispose();
-    super.dispose();
-  }
-
-  void _login() async {
-    String email = _email.text;
-    String password = _password.text;
-
-    if (!email.endsWith('@atharvacoe.ac.in')) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please use your college email address'),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-
-    final User? user = await _auth.loginUserWithEmailId(email, password);
-    if (user != null && context.mounted) {
-      print("User Successfully logged in");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Login Successful!'),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 2),
-        ),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(
-            isAdmin: false,
-            userName: 'Student',
-            profileUrl: '',
-          ),
-        ),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    void showToast(String message) {
+      Fluttertoast.showToast(
+          msg: message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+          textColor: Theme.of(context).colorScheme.onSurface,
+          fontSize: 16.0);
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -103,15 +68,8 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
                               final String? email = user?.email;
 
                               if (email != null &&
-                                  email.endsWith('@atharvacoe.ac.in')) {
-                                print("User Successfully logged in");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Login Successful!'),
-                                    backgroundColor: Colors.green,
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
+                                  email.endsWith('@atharvacoe.ac.in')) { 
+                                showToast('Login Successful!');
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -123,18 +81,11 @@ class _LoginScreenStudentState extends State<LoginScreenStudent> {
                                   ),
                                 );
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        'Please use your college email address'),
-                                    backgroundColor: Colors.red,
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
+                                showToast('Please use your college email address');
                               }
                             }
                           } catch (e) {
-                            print("Error during Google Sign In: $e");
+                            showToast("Error during Google Sign In: $e");
                           }
                         },
                         style: OutlinedButton.styleFrom(
