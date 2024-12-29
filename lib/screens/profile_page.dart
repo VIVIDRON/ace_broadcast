@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
               fontWeight: FontWeight.bold,
             ),
             child: Text('About You',
-                style: TextStyle(color: theme.colorScheme.inversePrimary)),
+                style: TextStyle(color: theme.colorScheme.primary,)),
           ),
         ),
         body: Padding(
